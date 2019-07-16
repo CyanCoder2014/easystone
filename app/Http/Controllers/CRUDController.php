@@ -70,6 +70,10 @@ class CRUDController extends Controller
 
             }
 
+            if (isset($field['importable']) && $class::is_new($field,$request->{$fillable})){
+                $new->{$fillable} = $class::$field['importable']($request->{$fillable});
+            }
+
 
         }
 

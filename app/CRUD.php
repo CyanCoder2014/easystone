@@ -81,7 +81,11 @@ abstract class CRUD extends Model
                     $model_name =$model[0];
                     $model_key =$model[1];
                     $model_value =$model[2];
-                    foreach ($model_name::all() as $record)
+                    if (isset($model[3]))
+                        $model_method =$model[3];
+                    else
+                        $model_method ='all';
+                    foreach ($model_name::$model_method() as $record)
                         $values[$record->$model_key]=$record->$model_value;
                 }
                 $cruds[$key]['values'] =$values;
@@ -89,6 +93,20 @@ abstract class CRUD extends Model
         }
 
         return $cruds;
+
+
+    }
+    public static function is_new($crud,$value){
+
+        if (isset($crud['values'])){
+            $model= explode(',',$crud['values']);
+            $model_name =$model[0];
+            $model_key =$model[1];
+            if ($model_name::where($model_key,$value)->first())
+                return true;
+            return false;
+        }
+        return true;
 
 
     }
@@ -116,21 +134,21 @@ abstract class CRUD extends Model
         return Route::group([],function (){
             if (static::implicit_ACL('index'))
 
-                Route::get(static::$url_prefix,'CRUDController@index')->defaults('class',static::class)->name(static::$url_prefix.'.index')->middleware(static::$middleware);
+                Route::get(static::$url_prefix,'\App\Http\Controllers\CRUDController@index')->defaults('class',static::class)->name(static::$url_prefix.'.index')->middleware(static::$middleware);
             if (static::implicit_ACL('create'))
-                Route::get(static::$url_prefix.'/create','CRUDController@create')->defaults('class',static::class)->name(static::$url_prefix.'.create')->middleware(static::$middleware);
+                Route::get(static::$url_prefix.'/create','\App\Http\Controllers\CRUDController@create')->defaults('class',static::class)->name(static::$url_prefix.'.create')->middleware(static::$middleware);
             if (static::implicit_ACL('store'))
-                Route::post(static::$url_prefix.'/store','CRUDController@store')->defaults('class',static::class)->name(static::$url_prefix.'.store')->middleware(static::$middleware);
+                Route::post(static::$url_prefix.'/store','\App\Http\Controllers\CRUDController@store')->defaults('class',static::class)->name(static::$url_prefix.'.store')->middleware(static::$middleware);
             if (static::implicit_ACL('edit'))
-                Route::get(static::$url_prefix.'/edit/{id}','CRUDController@edit')->defaults('class',static::class)->name(static::$url_prefix.'.edit')->middleware(static::$middleware);
+                Route::get(static::$url_prefix.'/edit/{id}','\App\Http\Controllers\CRUDController@edit')->defaults('class',static::class)->name(static::$url_prefix.'.edit')->middleware(static::$middleware);
             if (static::implicit_ACL('update'))
-                Route::put(static::$url_prefix.'/edit/{id}','CRUDController@update')->defaults('class',static::class)->name(static::$url_prefix.'.update')->middleware(static::$middleware);
+                Route::put(static::$url_prefix.'/edit/{id}','\App\Http\Controllers\CRUDController@update')->defaults('class',static::class)->name(static::$url_prefix.'.update')->middleware(static::$middleware);
             if (static::implicit_ACL('destroy'))
-                Route::delete(static::$url_prefix.'/destroy/{id}','CRUDController@destroy')->defaults('class',static::class)->name(static::$url_prefix.'.destroy')->middleware(static::$middleware);
+                Route::delete(static::$url_prefix.'/destroy/{id}','\App\Http\Controllers\CRUDController@destroy')->defaults('class',static::class)->name(static::$url_prefix.'.destroy')->middleware(static::$middleware);
             if (static::implicit_ACL('index'))
-                Route::get(static::$url_prefix.'/getdata','CRUDController@getdata')->defaults('class',static::class)->name(static::$url_prefix.'.getdata')->middleware(static::$middleware);
+                Route::get(static::$url_prefix.'/getdata','\App\Http\Controllers\CRUDController@getdata')->defaults('class',static::class)->name(static::$url_prefix.'.getdata')->middleware(static::$middleware);
             if (static::implicit_ACL('condition'))
-                Route::get(static::$url_prefix.'/condition/{field}','CRUDController@condition')->defaults('class',static::class)->name(static::$url_prefix.'.condition')->middleware(static::$middleware);
+                Route::get(static::$url_prefix.'/condition/{field}','\App\Http\Controllers\CRUDController@condition')->defaults('class',static::class)->name(static::$url_prefix.'.condition')->middleware(static::$middleware);
 
 
         });
@@ -165,7 +183,7 @@ abstract class CRUD extends Model
     {
 
 //        return 1;
-        if(parent::getAttribute($key)){
+        if(!parent::getAttribute($key)){
             $key1 = array_search($key, array_column(static::$crud, 'name'));
 //            if(
 //                strpos($key,'_id') &&  // if it has "_name" at end of string
@@ -207,6 +225,7 @@ abstract class CRUD extends Model
             }
 
         }
+        return parent::getAttribute($key);
     }
     public function setAttribute($key, $value){
         $key1 = array_search($key, array_column(static::$crud, 'name'));

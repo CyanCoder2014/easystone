@@ -286,6 +286,85 @@
                                         ==================================================== -->
                                 <ul id="navigation">
 
+                                    <li><a href=""><i class="fa fa-box"></i>
+                                            <span> محصولات  </span>
+                                            <span class="label label-success">new</span>
+                                        </a>
+                                            <ul>
+                                                <li>
+                                                    <a href="{{ route('Products.index') }}">مدیریت</a>
+                                                </li>
+                                            </ul>
+
+
+                                    </li>
+                                    <li><a href=""><i class="fa fa-pencil"></i>
+                                            <span> کارخانه ها  </span>
+                                            <span class="label label-success">new</span>
+                                        </a>
+                                            <ul>
+                                                <li>
+                                                    <a href="{{ route('Factory.index') }}">مدیریت</a>
+                                                </li>
+                                            </ul>
+
+
+                                    </li>
+
+
+                                    <li><a href=""><i class="fa fa-crop"></i>
+                                            <span> سایزبندی   </span>
+                                            <span class="label label-success">new</span>
+                                        </a>
+                                            <ul>
+                                                <li>
+                                                    <a href="{{ route('TypeSize.index') }}">مدیریت</a>
+                                                </li>
+                                            </ul>
+
+
+                                    </li>
+
+                                    <li><a href=""><i class="fa fa-crop"></i>
+                                            <span> انواع سطوح   </span>
+                                            <span class="label label-success">new</span>
+                                        </a>
+                                            <ul>
+                                                <li>
+                                                    <a href="{{ route('Surface.index') }}">مدیریت</a>
+                                                </li>
+                                            </ul>
+
+
+                                    </li>
+
+                                    <li><a href=""><i class="fa fa-link"></i>
+                                            <span> منابع   </span>
+                                            <span class="label label-success">new</span>
+                                        </a>
+                                            <ul>
+                                                <li>
+                                                    <a href="{{ route('Sources.index') }}">مدیریت</a>
+                                                </li>
+                                            </ul>
+
+
+                                    </li>
+
+
+                                    <li><a href=""><i class="fa fa-columns"></i>
+                                            <span> رنگ ها  </span>
+                                            <span class="label label-success">new</span>
+                                        </a>
+                                            <ul>
+                                                <li>
+                                                    <a href="{{ route('Color.index') }}">مدیریت</a>
+                                                </li>
+                                            </ul>
+
+
+                                    </li>
+
                                     <li><a href=""><i class="fa fa-gears"></i>
                                             <span> تنظیمات  </span>
                                             <span class="label label-success">new</span>

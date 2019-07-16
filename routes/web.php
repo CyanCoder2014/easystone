@@ -16,9 +16,5 @@ Route::get('/', function () {
 });
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Auth::routes();
-\App\Factory::Route_list();
-\App\Source::Route_list();
-\App\TypeSize::Route_list();
-\App\Category::Route_list();
-
+include('admin.php');
 Route::get('/home', 'HomeController@index')->name('home');

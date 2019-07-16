@@ -136,7 +136,7 @@ class Factory extends CRUD
           'addable' =>true,
       ]
     ];
-    protected static $url_prefix='UserFactory';
+    protected static $url_prefix='Factory';
     protected static $middleware=['auth'];
 
     public function default_user_id(){
@@ -150,6 +150,9 @@ class Factory extends CRUD
     }
     public function province(){
         $this->belongsTo(Province::class);
+    }
+    public static function userFactory(){
+        return static::where('user_id',Auth::id())->get();
     }
 
     public static function laratablesRoleRelationQuery()
