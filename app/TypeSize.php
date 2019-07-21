@@ -10,7 +10,7 @@ class TypeSize extends CRUD
     use SoftDeletes;
     protected static $name='انواع سایز بندی';
     protected $fillable= ['name','length','width','height','quantity','tonnage','price_calculation','status'];
-    protected static $layout='layout';
+    protected static $layout='admin';
     protected static $method_access=[
         'index' => true,
         'create' => true,

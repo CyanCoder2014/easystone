@@ -45,7 +45,7 @@
 
     <script src="<?= Url('assets/plugins/ckeditor/ckeditor.js'); ?>"></script>
 
-@yield('script')
+@yield('head')
     <!--/ modernizr -->
 </head>
 
@@ -755,6 +755,7 @@ toastr.error("{{ Session::get('error') }}");
 
 
 </script>
+@yield('script')
 @yield('end_script')
 </body>
 </html>

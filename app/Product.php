@@ -102,6 +102,14 @@ class Product extends CRUD
             'values' =>'App\Quality,id,name',
         ],
         [
+            'name' =>'proccessing_ids',
+            'slug' =>'فرایندها',
+            'validation'=>'',
+            'type' =>'tags',
+            'values' =>'App\Processing,id,name',
+            'pivot' =>'App\ProductProcessing,MakeRel',
+        ],
+        [
             'name' =>'source_id',
             'slug' =>'منبع',
             'validation'=>'required',

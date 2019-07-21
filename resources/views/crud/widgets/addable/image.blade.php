@@ -1,4 +1,6 @@
-
+@section('head')
+@endsection
+@section('field')
 <div class="col-12">
     <div class="row" id="Addable{{$fiels['name']}}">
         <label for="">{{ $fiels['slug'] }}</label>
@@ -19,7 +21,8 @@
     </div>
     <button id="add{{ $fiels['name'] }}" type="button">اضافه کردن</button>
 </div>
-
+@endsection
+@section('script')
 
 <script src="{{asset('/vendor/laravel-filemanager/js/lfm.js')}}"></script>
 <script>
@@ -34,7 +37,6 @@
         $('#add{{ $fiels['name'] }}').click(function () {
             count{{$fiels['name']}}++;
             $(addable{{$fiels['name']}}).append('<div class="col-sm-4 input-group">' +
-                '            <label for="{{ $fiels['name'] }}'+count{{$fiels['name']}}+'">{{ $fiels['slug'] }}</label>' +
                 '            <span class="input-group-btn">' +
                 '             <a id="lfm{{ $fiels['name'] }}'+count{{$fiels['name']}}+'" data-input="{{ $fiels['name'] }}'+count{{$fiels['name']}}+'" data-preview="thumbnail{{ $fiels['name'] }}'+count{{$fiels['name']}}+'" class="btn btn-primary">' +
                 '               <i class="fa fa-picture-o"></i> انتخاب' +
@@ -50,3 +52,4 @@
 
 
 </script>
+@endsection

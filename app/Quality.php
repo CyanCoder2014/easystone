@@ -10,7 +10,7 @@ class Quality extends CRUD
     use SoftDeletes;
     protected static $name='کیفیت';
     protected $fillable= ['name','status'];
-    protected static $layout='layout';
+    protected static $layout='admin';
     protected static $method_access=[
         'index' => true,
         'create' => true,

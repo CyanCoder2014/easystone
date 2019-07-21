@@ -103,8 +103,8 @@ abstract class CRUD extends Model
             $model_name =$model[0];
             $model_key =$model[1];
             if ($model_name::where($model_key,$value)->first())
-                return true;
-            return false;
+                return false;
+            return true;
         }
         return true;
 

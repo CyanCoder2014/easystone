@@ -11,7 +11,7 @@ class Factory extends CRUD
     use SoftDeletes;
     protected static $name='کارخانه';
     protected $fillable= ['user_id','city_id','province_id','name','manager','address','phone','mobile','lat','lng','description','logo','background_img','images','licences','status'];
-    protected static $layout='layout';
+    protected static $layout='admin';
     protected static $method_access=[
       'index' => true,
       'create' => true,

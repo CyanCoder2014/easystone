@@ -1,9 +1,17 @@
-@extends($class::getLayout())
-<?php $fileCount=0 ?>
-@section('script')
-    <link rel="stylesheet" href="{{asset('assets/js/vendor/touchspin/jquery.bootstrap-touchspin.min.css')}}">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+@extends($LayoutName)
+@section('head')
+   @foreach($heads as $link)
+    {!! $link !!}
+   @endforeach
 
+@endsection
+@section('script')
+
+{{--    <link rel="stylesheet" href="{{asset('assets/js/vendor/touchspin/jquery.bootstrap-touchspin.min.css')}}">--}}
+{{--    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>--}}
+    @foreach($scripts as $link)
+        {!! $link !!}
+    @endforeach
 @endsection
 @section('content')
     <!-- ====================================================
@@ -19,18 +27,6 @@
 
                 <div class="page-bar">
 
-{{--                    <ul class="page-breadcrumb">--}}
-{{--                        <li>--}}
-{{--                            <a href="{{ url('/admin') }}"><i class="fa fa-home"></i> پنل مدیریت</a>--}}
-{{--                        </li>--}}
-{{--                        <li>--}}
-{{--                            <a href="{{ url('/admin') }}">مدیریت</a>--}}
-{{--                        </li>--}}
-{{--                        <li>--}}
-{{--                            <a href="">افزودن{{ $class::getName() }} </a>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-
                 </div>
 
             </div>
@@ -43,15 +39,14 @@
                     </div>
                 @endif
 
-            <form id="productForm" class="form-horizontal ng-pristine ng-valid" role="form" method="post" action="{{ $class::route('store') }}"  enctype="multipart/form-data">
+            <form id="productForm" class="form-horizontal ng-pristine ng-valid" role="form" method="post" action="{{ $ActionUrl }}"  enctype="multipart/form-data">
                 {{ csrf_field() }}
+                @if(isset($methodField))
+                    {!! $methodField !!}
+                @endif
                 <div class="row">
-                    @foreach($class::getform() as $form)
-                        @if(isset($form['addable']) && $form['addable'])
-                            @include('crud.widgets.addable.'.$form['type'],['fiels' => $form,'value' => old($form['name']),'class' =>$class ])
-                        @else
-                            @include('crud.widgets.'.$form['type'],['fiels' => $form,'value' => old($form['name']), 'class' => $class ])
-                        @endif
+                    @foreach($fields as $link)
+                        {!! $link !!}
                     @endforeach
                 </div>
                 <button type="submit" class="btm btn-success">ثبت</button>

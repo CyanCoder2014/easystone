@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Freshbitsweb\Laratables\Laratables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class CRUDController extends Controller
 {
@@ -19,7 +20,25 @@ class CRUDController extends Controller
      */
     public function create($class)
     {
-        return view('crud.create',['class' => $class]);
+        $LayoutName=$class::getLayout();
+        $ActionUrl=$class::route('store');
+        $scripts = [];
+        $fields = [];
+        $heads = [];
+        foreach($class::getform() as $key =>$form){
+            if(isset($form['addable']) && $form['addable'])
+                $view =View::make('crud.widgets.addable.'.$form['type'])->with(['fiels' => $form,'value' => old($form['name']),'class' =>$class ])->renderSections();
+            else
+                $view =View::make('crud.widgets.'.$form['type'])->with(['fiels' => $form,'value' => old($form['name']),'class' =>$class ])->renderSections();
+                if (isset($view['script']))
+                $scripts[] = $view['script'];
+            if (isset($view['field']))
+                $fields[] = $view['field'];
+            if (isset($view['head']))
+                $heads[] = $view['head'];
+        }
+//        dd(compact('LayoutName','ActionUrl','heads','fields','scripts'));
+        return view('crud.create',compact('LayoutName','ActionUrl','heads','fields','scripts'));
     }
 
     /**
@@ -71,13 +90,15 @@ class CRUDController extends Controller
             }
 
             if (isset($field['importable']) && $class::is_new($field,$request->{$fillable})){
-                $new->{$fillable} = $class::$field['importable']($request->{$fillable});
+                $new->{$fillable} = $class::{$field['importable']}($request->{$fillable});
             }
 
 
         }
 
         $new->save();
+        $this->handlePivots($new,$request,$class);
+
         return redirect($class::route('index'))->with('message','با موفقیت ذخیره شد');
     }
 
@@ -102,7 +123,26 @@ class CRUDController extends Controller
     public function edit($id,$class)
     {
         $record = $class::findOrFail($id);
-//        dd($record);
+        $LayoutName=$class::getLayout();
+        $ActionUrl=$class::route('edit');
+        $methodField = method_field('put');
+        $scripts = [];
+        $fields = [];
+        $heads = [];
+        foreach($class::getform() as $key =>$form){
+            if(isset($form['addable']) && $form['addable'])
+                $view =View::make('crud.widgets.addable.'.$form['type'])->with(['fiels' => $form,'value' => old($form['name']),'class' =>$class ])->renderSections();
+            else
+                $view =View::make('crud.widgets.'.$form['type'])->with(['fiels' => $form,'value' => $record->{$form['name']},'class' =>$class ])->renderSections();
+            if (isset($view['script']))
+                $scripts[] = $view['script'];
+            if (isset($view['field']))
+                $fields[] = $view['field'];
+            if (isset($view['head']))
+                $heads[] = $view['head'];
+        }
+//        dd(compact('LayoutName','ActionUrl','heads','fields','scripts'));
+        return view('crud.create',compact('LayoutName','ActionUrl','heads','fields','scripts','methodField'));
         return view('crud.edit',['class' => $class,'record'=>$record]);
     }
 
@@ -158,7 +198,26 @@ class CRUDController extends Controller
 
         }
         $record->save();
+        $this->handlePivots($record,$request,$class);
+
+
         return redirect($class::route('index'))->with('message','با موفقیت ویرایش شد');
+    }
+    private function handlePivots($record,$request,$class){
+        foreach ($record->getFillable() as $fillable)
+        {
+            $field = $class::findField($fillable);
+            if(isset($field['pivot'])){
+                $model= explode(',',$field['pivot']);
+                if (!isset($model[0]) && !isset($model[1]))
+                    throw new \Exception($field['name'].' pivot not define properly');
+                if (!class_exists ($model[0]))
+                    throw new \Exception($field['name'].' pivot model not exist');
+                if (!method_exists($model[0],$model[1]))
+                    throw new \Exception($field['name'].' pivot method not exist');
+                $model[0]::$model[1]($record,$request->{$fillable});
+            }
+        }
     }
 
     /**

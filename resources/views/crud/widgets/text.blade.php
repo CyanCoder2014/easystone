@@ -1,4 +1,5 @@
-<div class="col-sm-12 form-group {{ $fiels['name'] }}">
+@section('field')
+    <div class="col-sm-12 form-group {{ $fiels['name'] }}">
     @if(isset($fiels['slug']))
         <label for="{{ $fiels['name'] }}">{{ $fiels['slug'] }}</label>
     @endif
@@ -6,6 +7,8 @@
     @if(isset($fiels['description']))<small id="{{ $fiels['name'] }}Help" class="form-text text-muted">{{ $fiels['description'] }}</small> @endif
 
 </div>
+@endsection
+@section('script')
 @if(isset($fiels['showIF']))
     <?php
         $showif = explode(',',$fiels['showIF']);
@@ -23,3 +26,4 @@
     })
 </script>
 @endif
+@endsection

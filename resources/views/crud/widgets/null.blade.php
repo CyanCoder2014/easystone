@@ -1,1 +1,3 @@
-<div></div>
+@section('field')
+    <div></div>
+@endsection

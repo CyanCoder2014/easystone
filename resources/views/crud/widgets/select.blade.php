@@ -1,3 +1,4 @@
+@section('field')
 <div class="col-sm-4 form-group">
     @if(isset($fiels['slug']))
         <label for="{{ $fiels['name'] }}">{{ $fiels['slug'] }}</label>
@@ -14,8 +15,12 @@
 
         </select>
 </div>
+@endsection
+@section('head')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+@endsection
+@section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script>
     $('#{{ $fiels['name'] }}').select2(@if(isset($fiels['importable'])){
         tags: true,
@@ -81,3 +86,4 @@
 
     @endif
 </script>
+@endsection

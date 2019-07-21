@@ -1,4 +1,6 @@
-<script src="{{asset('/vendor/laravel-filemanager/js/lfm.js')}}"></script>
+@section('head')
+@endsection
+@section('field')
 <div class="col-12">
     <div class="row" id="Addable{{$fiels['name']}}">
         <label for="">{{ $fiels['slug'] }}</label>
@@ -15,7 +17,9 @@
     <button id="add{{ $fiels['name'] }}" type="button">اضافه کردن</button>
 </div>
 
-
+@endsection
+@section('script')
+    <script src="{{asset('/vendor/laravel-filemanager/js/lfm.js')}}"></script>
 
 <script>
     $(document).ready(function () {
@@ -33,3 +37,4 @@
 
 
 </script>
+@endsection
