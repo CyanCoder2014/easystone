@@ -131,7 +131,7 @@ class CRUDController extends Controller
         $heads = [];
         foreach($class::getform() as $key =>$form){
             if(isset($form['addable']) && $form['addable'])
-                $view =View::make('crud.widgets.addable.'.$form['type'])->with(['fiels' => $form,'value' => old($form['name']),'class' =>$class ])->renderSections();
+                $view =View::make('crud.widgets.addable.'.$form['type'])->with(['fiels' => $form,'value' => $record->{$form['name']},'class' =>$class ])->renderSections();
             else
                 $view =View::make('crud.widgets.'.$form['type'])->with(['fiels' => $form,'value' => $record->{$form['name']},'class' =>$class ])->renderSections();
             if (isset($view['script']))
